@@ -1,32 +1,71 @@
-class Car:
+from math import radians, sin, cos, pi, asin, degrees
+
+
+class Wheels:
     def __init__(self):
-        self.x, self.y = 0, 0
+        self.angle = 0  # angle of center wheel
 
-        self.speed = 0  # pixels per seconds
 
-        # acceleration parameters f(x) = a * x + b
-        self.a_acceleration = 1  # a >= 1
-        self.b_acceleration = 1
+class Car:
+    pos = (0, 0)
+    angle = 0
+    speed = 0
+    wheels = Wheels()
 
-        # braking parameters f(x) = a * x + b
-        self.a_braking = 1  # 0 < a < 1
-        self.b_braking = 1
+    def __init__(self, length, width):
+        self.length, self.width = length, width
 
-        self.acceleration_speed = 1  # pixels per seconds
+    def move(self, delta):
+        print(f"pos: {self.pos}")
+        # distance traveled by the car
+        distance = delta * self.speed
 
-        self.angle = 0  # 0-360 degree
+        if not self.wheels.angle:
+            pass
 
-        self.wheel_angle = 90  # 0-180 degree
-        self.wheel_difference_coefficient = 1.36
+        # radius of center of rotation
+        r = self.length / (2 * sin(radians(self.wheels.angle)))
 
-    def accelerate(self, delta_time):
-        self.speed = (self.speed * self.a_acceleration + self.b_acceleration) * delta_time
+        # center of rotation
+        general = self.angle + self.wheels.angle + 90  # angle between axis and car pos
+        center = (r * cos(radians(general)),
+                  -r * sin(radians(general)))  # center without current pos shift
+        """минус по Oy из-за специфичного расположения осей в pygame"""
 
-    def brake(self, delta_time):  # stop
-        self.speed = (self.speed * self.a_acceleration - self.b_acceleration) * delta_time
+        # angle between 0 and point to which we are going to move
+        distance_angle = distance / (2 * pi * r) * 360
+        shift_angle = degrees(asin(
+            (-center[1]) / r))
 
-    def rotation(self, delta_time, angle):
+        angle = distance_angle - shift_angle
+
+        shift_x = (cos(radians(angle)) - cos(radians(-shift_angle))) * r
+        shift_y = -(sin(radians(angle)) - sin(radians(-shift_angle))) * r
+
+        print(shift_x)
+        print(shift_y)
+        self.pos = (shift_x + self.pos[0],
+                    shift_y + self.pos[1])
+        self.angle = (self.angle + distance_angle) % 360
+        # print(f"r: {r}")
+        # print(f"move_angle: {angle}, distance_angle: {distance_angle}б, shift_angle: {shift_angle}")
+        # print(f"distance: {distance}")
+        print(f"center: {center}")
+        # print(f"general: {general}")
+        print(f"angle: {self.angle}")
+
+    def rotation_center(self):
+        r = self.length / (2 * sin(radians(self.wheels.angle)))
+        # center of rotation
+        general = self.angle + self.wheels.angle + 90  # angle between axis and car pos
+        center = (r * cos(radians(general) + self.pos[0]),
+                  -r * sin(radians(general)) + self.pos[1])  # center without current pos shift
+        """минус по Oy из-за специфичного расположения осей в pygame"""
+        return center
+
+    def update(self, delta):
+        self.move(delta)
+
+    def image(self):
         pass
 
-    def move(self, delta_time):
-        pass
