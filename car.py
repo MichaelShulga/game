@@ -27,9 +27,9 @@ class Car:
         r = self.length / (2 * sin(radians(self.wheels.angle)))
 
         # center of rotation
-        general = self.angle + self.wheels.angle + 90  # angle between axis and car pos
-        center = (r * cos(radians(general)),
-                  -r * sin(radians(general)))  # center without current pos shift
+        general = self.angle + self.wheels.angle - 90  # angle between axis and car pos
+        center = (-r * cos(radians(general)),
+                  r * sin(radians(general)))  # center without current pos shift
         """минус по Oy из-за специфичного расположения осей в pygame"""
 
         # angle between 0 and point to which we are going to move
@@ -57,15 +57,8 @@ class Car:
     def rotation_center(self):
         r = self.length / (2 * sin(radians(self.wheels.angle)))
         # center of rotation
-        general = self.angle + self.wheels.angle + 90  # angle between axis and car pos
-        center = (r * cos(radians(general) + self.pos[0]),
-                  -r * sin(radians(general)) + self.pos[1])  # center without current pos shift
+        general = self.angle + self.wheels.angle - 90  # angle between axis and car pos
+        center = (-r * cos(radians(general) + self.pos[0]),
+                  r * sin(radians(general)) + self.pos[1])  # center without current pos shift
         """минус по Oy из-за специфичного расположения осей в pygame"""
         return center
-
-    def update(self, delta):
-        self.move(delta)
-
-    def image(self):
-        pass
-
