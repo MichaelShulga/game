@@ -8,6 +8,7 @@ def create_car(group):
     car = CarController(120, 72)
     car.pos = (WIDTH // 2, HEIGHT // 2)
     car.speed = 150
+    car.angle = 0
     car.wheels_angle = 30
     group.add(car)
 

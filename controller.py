@@ -10,19 +10,21 @@ class CarController(Car, pygame.sprite.Sprite):
     def __init__(self, length, width):
         super().__init__(length, width)
         pygame.sprite.Sprite.__init__(self)
+
+        self.surface = pygame.Surface([self.length * 3, self.width * 3], pygame.SRCALPHA)
+        self.shifts = (self.surface.get_width() / 2 - self.length / 2,
+                       self.surface.get_height() / 2 - self.width / 2)
+
         self.render()
 
     def get_surface(self):
-        # surface init
-        shift = max(self.width, self.length)  # to draw outside car width and length limits
-        surface = pygame.Surface([self.length + 2 * shift, self.width + 2 * shift],
-                                 pygame.SRCALPHA)
+        surface = pygame.Surface.copy(self.surface)
+
         # drawing
         pygame.draw.rect(surface, pygame.Color("aquamarine3"),
-                         ((shift, shift), (self.length, self.width)), 0)
-        pygame.draw.circle(surface, (255, 0, 0), (shift + self.length / 2,
-                                                  shift + self.width / 2), 5)
-
+                         (self.shifts, (self.length, self.width)), 0)
+        pygame.draw.circle(surface, (255, 0, 0), (self.shifts[0] + self.length / 2,
+                                                  self.shifts[1] + self.width / 2), 5)
         # rotating
         surface = pygame.transform.rotozoom(surface, -self.angle, 1)  # minus due to clockwise rotation
 
