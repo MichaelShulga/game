@@ -1,15 +1,13 @@
 import pygame
 
+from config import WIDTH, HEIGHT, FPS
 from controller import CarController
-
-FPS = 240
-WIDTH, HEIGHT = 1200, 600
 
 
 def create_car(group):
     car = CarController(120, 72)
-    car.pos = (WIDTH // 2, HEIGHT)
-    car.speed = 70
+    car.pos = (WIDTH // 2, HEIGHT // 2)
+    car.speed = 150
     car.wheels_angle = 30
     group.add(car)
 

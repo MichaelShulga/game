@@ -24,7 +24,7 @@ class CarController(Car, pygame.sprite.Sprite):
                                                   shift + self.width / 2), 5)
 
         # rotating
-        surface = pygame.transform.rotozoom(surface, self.angle, 1)
+        surface = pygame.transform.rotozoom(surface, -self.angle, 1)  # minus due to clockwise rotation
 
         return surface
 
