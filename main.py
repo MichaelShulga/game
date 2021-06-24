@@ -10,11 +10,11 @@ def create_car(group):
     car = CarController(120, 72)
     car.pos = (WIDTH // 2, HEIGHT)
     car.speed = 70
-    car.wheels.angle = 30
+    car.wheels_angle = 30
     group.add(car)
 
 
-def main_loop(screen, sprites):
+def main_loop(screen, objects):
     clock = pygame.time.Clock()
     running = True
     while running:
@@ -34,12 +34,12 @@ def main_loop(screen, sprites):
                     pass
 
         # update objects
-        sprites.update(clock.tick(FPS) / 1000)
+        objects.update(clock.tick(FPS) / 1000)
 
         # screen rendering
         screen.fill(pygame.Color("grey"))
 
-        sprites.draw(screen)
+        objects.draw(screen)
 
         # update screen
         pygame.display.flip()
@@ -51,6 +51,7 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 
     all_sprites = pygame.sprite.Group()
+
     create_car(all_sprites)
 
     main_loop(screen, all_sprites)
