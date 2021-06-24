@@ -26,6 +26,5 @@ class Car:
         angle_after = distance_angle + angle_before
         center = circle_center(self.pos, radians(angle_before), r)
 
-        print(self.pos)
         self.pos = circle_point(center, radians(angle_after), r)
         self.angle = (self.angle + distance_angle) % 360
