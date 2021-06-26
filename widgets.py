@@ -35,20 +35,23 @@ class Widget(pygame.sprite.Sprite):
         self.image = self.get_surface()
 
     def update(self, delta):
-        self.render()
+        if delta:  # calculate
+            self.render()
+        else:  # handle events
+            pass
 
 
 class WidgetFPS(Widget):
-    def update(self, delta):
+    def update(self, delta=0, event=None):
         if not delta:
-            self.text = 'Unlimited'
+            self.text = '...'
         else:
-            self.text = str(1 / delta)
+            self.text = str(round(1 / delta))
         self.render()
 
 
 if __name__ == '__main__':
-    WIDTH, HEIGHT = 1200, 600
+    from config import WIDTH, HEIGHT
 
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
@@ -63,7 +66,7 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 running = False
 
-        all_sprites.update(clock.tick() / 1000)
+        all_sprites.update(delta=clock.tick() / 1000)
 
         screen.fill(pygame.Color("grey"))
 
