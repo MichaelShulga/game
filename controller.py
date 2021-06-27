@@ -59,7 +59,7 @@ class CarController(Car, pygame.sprite.Sprite):
         if delta:  # update image
             self.move(delta)
             self.render()
-        else:  # handle events
+        if event:  # handle events
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     self.speed += 10

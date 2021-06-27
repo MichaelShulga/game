@@ -1,12 +1,12 @@
 import pygame
 
-from config import WIDTH, HEIGHT, FPS
+from config import WIDTH, HEIGHT, FPS, FONT
 from controller import CarController
 from widgets import WidgetFPS
 
 
 def create_car(group):
-    car = CarController(140, 80, group)
+    car = CarController(120, 72, group)
     car.pos = (WIDTH / 2, HEIGHT * 3 / 4)
     car.speed = 0
     car.angle = 0
@@ -14,7 +14,7 @@ def create_car(group):
 
 
 def create_widgets(group):
-    widget_fps = WidgetFPS("FPS", pygame.Rect((10, 10), (86, 50)), group)
+    widget_fps = WidgetFPS("FPS", pygame.Rect((5, 5), (65, 50)), group, font=FONT)
 
 
 def main_loop(screen, sprites):
@@ -30,7 +30,7 @@ def main_loop(screen, sprites):
         sprites.update(delta=clock.tick(FPS) / 1000)
 
         # screen rendering
-        screen.fill(pygame.Color("white"))
+        screen.fill(pygame.Color("grey"))
 
         sprites.draw(screen)
 

@@ -2,3 +2,4 @@ X_INVERSION = 1
 Y_INVERSION = -1
 FPS = 0
 WIDTH, HEIGHT = 1200, 600
+FONT = "bahnschrift"

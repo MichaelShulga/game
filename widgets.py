@@ -4,41 +4,37 @@ import pygame
 class Widget(pygame.sprite.Sprite):
     text = ''
 
-    def __init__(self, name, rect: pygame.Rect, *groups, color=pygame.Color("black"), width=3):
+    def __init__(self, name, rect: pygame.Rect, *groups,
+                 color=pygame.Color("black"), font="Times New Roman", width=3):
         super().__init__(*groups)
 
+        #  sprite params
         self.rect = rect
+        self.image = None
 
-        self.color = color
-        self.shifts = (5, 5)
-
-        font = pygame.font.Font(None, 20)
-        self.heading = font.render(name, True, color)
-
+        # create surface
         self.surface = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         pygame.draw.rect(self.surface, color, ((0, 0), self.rect.size), width)
-        self.surface.blit(self.heading, self.shifts)
 
-        self.image = self.get_surface()
+        # heading
+        self.shifts = (5, 5)
+        heading = pygame.font.SysFont(font, 12).render(name, True, color)
+        self.surface.blit(heading, self.shifts)
 
-    def get_surface(self):
-        surface = pygame.Surface.copy(self.surface)
+        # text params
+        self.color = color
+        self.text_font = pygame.font.SysFont(font, 24)
+        self.shifts = (self.shifts[0], self.shifts[1] + heading.get_height())
 
-        # drawing
-        font = pygame.font.Font(None, 40)
-        text = font.render(self.text, True, self.color)
-        surface.blit(text, (self.shifts[0], self.shifts[1] * 2 + self.heading.get_height()))
-
+    def get_surface(self, surface):
+        surface.blit(self.text_font.render(self.text, True, self.color), self.shifts)
         return surface
 
     def render(self):
-        self.image = self.get_surface()
+        self.image = self.get_surface(pygame.Surface.copy(self.surface))
 
-    def update(self, delta):
-        if delta:  # calculate
-            self.render()
-        else:  # handle events
-            pass
+    def update(self, delta, *args):
+        self.render()
 
 
 class WidgetFPS(Widget):
@@ -51,13 +47,13 @@ class WidgetFPS(Widget):
 
 
 if __name__ == '__main__':
-    from config import WIDTH, HEIGHT
+    from config import WIDTH, HEIGHT, FONT
 
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 
     all_sprites = pygame.sprite.Group()
-    widget = WidgetFPS("Test", pygame.Rect((1100, 0), (100, 50)), all_sprites)
+    widget = WidgetFPS("Test", pygame.Rect((1120, 5), (75, 50)), all_sprites, font=FONT)
 
     clock = pygame.time.Clock()
     running = True
