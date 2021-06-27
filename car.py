@@ -1,4 +1,4 @@
-from math import radians, sin, atan, degrees, sqrt, tan
+from math import radians, sin, atan, degrees, tan
 
 from geometry import arc_angle, circle_point, circle_center, line_point
 
@@ -20,11 +20,19 @@ class Car:
         else:
             self.direct_move(distance)
 
+    def get_radius(self):
+        return self.length / (2 * sin(radians(self.wheels_angle)))
+
+    def get_angle_pos(self):   # angle between axis, rotation center and car pos
+        return self.angle + self.wheels_angle - 90
+
     def rotational_move(self, distance):
         radius = self.length / (2 * sin(radians(self.wheels_angle)))
-        angle_before = self.angle + self.wheels_angle - 90  # angle between axis, rotation center and car pos before move
         distance_angle = degrees(arc_angle(distance, radius))
-        angle_after = distance_angle + angle_before  # angle between axis, rotation center and car pos after move
+
+        angle_before = self.get_angle_pos()  # before move
+        angle_after = distance_angle + angle_before  # after move
+
         center = circle_center(self.pos, radians(angle_before), radius)
 
         self.pos = circle_point(center, radians(angle_after), radius)

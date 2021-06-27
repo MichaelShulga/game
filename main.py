@@ -6,10 +6,10 @@ from widgets import WidgetFPS
 
 
 def create_car(group):
-    car = CarController(120, 72, group)
+    car = CarController(140, 80, group)
     car.pos = (WIDTH / 2, HEIGHT * 3 / 4)
     car.speed = 0
-    car.angle = 90
+    car.angle = 0
     car.wheels_angle = 0
 
 
@@ -30,7 +30,7 @@ def main_loop(screen, sprites):
         sprites.update(delta=clock.tick(FPS) / 1000)
 
         # screen rendering
-        screen.fill(pygame.Color("grey"))
+        screen.fill(pygame.Color("white"))
 
         sprites.draw(screen)
 
